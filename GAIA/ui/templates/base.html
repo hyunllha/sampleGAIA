@@ -1,0 +1,116 @@
+<!-- gaia/ui/templates/base.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GAIA - Game AI Assistant{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-robot me-2"></i>GAIA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == url_for('index') %}active{% endif %}" href="{{ url_for('index') }}">
+                            <i class="fas fa-home me-1"></i> 홈
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == url_for('onestep') %}active{% endif %}" href="{{ url_for('onestep') }}">
+                            <i class="fas fa-check-circle me-1"></i> 원스텝 프로세스
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == url_for('twostep_translate') %}active{% endif %}" href="{{ url_for('twostep_translate') }}">
+                            <i class="fas fa-exchange-alt me-1"></i> 투스텝 프로세스
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Project Selector -->
+                <div class="ms-auto d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="projectDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-gamepad me-1"></i> 프로젝트 선택
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectDropdown">
+                            {% for project in projects %}
+                            <li><a class="dropdown-item project-select" href="#" data-key="{{ project.key }}">
+                                {{ project.name }} ({{ project.name_jp }})
+                            </a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4 mb-5">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">GAIA (Game AI Assistant) - Ver 1.0</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2025 글로벌서비스 2팀</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 기존 JavaScript 로딩 부분 -->
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Custom JS - 메인 스크립트만 기본으로 로드 -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- 템플릿 관리 스크립트 - 모든 페이지에서 필요 -->
+    <script src="{{ url_for('static', filename='js/modules/templates.js') }}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
