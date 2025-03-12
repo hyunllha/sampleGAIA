@@ -1,0 +1,184 @@
+<!-- gaia/ui/templates/cs/twostep_response.html -->
+{% extends "base.html" %}
+
+{% block title %}GAIA - 투스텝 프로세스 (응답 생성){% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="content-card mb-4">
+            <h2 class="mb-3">
+                <i class="fas fa-exchange-alt text-success me-2"></i>투스텝 프로세스 - 응답 생성
+            </h2>
+            <p class="lead">번역된 문의 내용을 확인하고 응답을 생성하는 두 번째 단계입니다.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    <i class="fas fa-language me-2"></i>번역 결과
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <span class="lang-tag lang-jp">일본어 원문</span>
+                    <h5 id="inquiry_title_display">{{ inquiry_title }}</h5>
+                    <div class="p-3 bg-light rounded" id="inquiry_content_display">
+                        {{ inquiry_content|nl2br }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <span class="lang-tag lang-ko">한국어 번역</span>
+                    <h5>번역 및 요약</h5>
+                    <div class="p-3 bg-light rounded translation-summary">
+                        {{ translation.summary|default('번역된 요약 정보가 없습니다.')|nl2br }}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h5>답변 방향 제안</h5>
+                    <div class="p-3 bg-light rounded translation-suggestion">
+                        {{ translation.suggestion|default('답변 방향 제안 정보가 없습니다.')|nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="{{ url_for('twostep_response') }}" method="POST" id="twostep-response-form">
+    <input type="hidden" name="inquiry_title" value="{{ inquiry_title }}">
+    <input type="hidden" name="inquiry_content" value="{{ inquiry_content }}">
+    <input type="hidden" name="translated_summary" value="{{ translation.summary|default('') }}">
+    
+    <div class="row">
+        <!-- 왼쪽 컬럼: 응답 정보 -->
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="fas fa-reply me-2"></i>응답 정보
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- 프로젝트 선택 -->
+                    <div class="mb-3">
+                        <label for="project_key" class="form-label">프로젝트</label>
+                        <select class="form-select" id="project_key" name="project_key" required>
+                            <option value="">-- 프로젝트 선택 --</option>
+                            {% for project in projects %}
+                            <option value="{{ project.key }}">{{ project.name }} ({{ project.name_jp }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- 희망 답변 (선택사항) -->
+                    <div class="mb-3">
+                        <label for="custom_response" class="form-label">희망 답변 (선택사항)</label>
+                        <textarea class="form-control" id="custom_response" name="custom_response" rows="4"></textarea>
+                        <div class="form-text">답변 방향이나 포함하고 싶은 내용을 자유롭게 입력하세요.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 오른쪽 컬럼: 템플릿 선택 -->
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="fas fa-file-alt me-2"></i>답변 템플릿 선택
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- 추천 템플릿 -->
+                    {% if translation.recommended_templates %}
+                    <div class="mb-3">
+                        <h6 class="mb-2">AI 추천 템플릿</h6>
+                        <div class="list-group mb-3">
+                            {% for template in translation.recommended_templates %}
+                            <div class="list-group-item list-group-item-action template-item" 
+                                 data-key="{{ template.key }}" 
+                                 data-category="{{ template.category }}">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ template.section }}</h6>
+                                    <span class="badge bg-success">{{ template.category }}</span>
+                                </div>
+                                <small>{{ template.key }}</small>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- 템플릿 필터링 및 검색 -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="template-category" class="form-label">카테고리 필터</label>
+                            <select class="form-select" id="template-category">
+                                <option value="all">전체 카테고리</option>
+                                <option value="기본">기본</option>
+                                <option value="결제">결제</option>
+                                <option value="계정">계정</option>
+                                <option value="오류">오류</option>
+                                <option value="건의사항">건의사항</option>
+                                <option value="신고">신고</option>
+                                <option value="불만">불만</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="template-search" class="form-label">검색</label>
+                            <input type="text" class="form-control" id="template-search" placeholder="템플릿 검색...">
+                        </div>
+                    </div>
+                    
+                    <!-- 전체 템플릿 목록 -->
+                    <div class="template-list" style="max-height: 300px; overflow-y: auto;">
+                        <div class="list-group">
+                            {% for template in templates %}
+                            <div class="list-group-item list-group-item-action template-item" 
+                                 data-key="{{ template.key }}" 
+                                 data-category="{{ template.category }}">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ template.section }}</h6>
+                                    <span class="badge bg-primary">{{ template.category }}</span>
+                                </div>
+                                <small>{{ template.key }}</small>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- 숨겨진 템플릿 키 필드 -->
+                    <input type="hidden" id="template_key" name="template_key">
+                </div>
+            </div>
+            
+            <!-- 제출 버튼 -->
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="fas fa-paper-plane me-2"></i>응답 생성
+                </button>
+            </div>
+            
+            <!-- 로딩 스피너 -->
+            <div class="spinner-container" id="loading-spinner" style="display: none;">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">응답 생성 중...</span>
+                </div>
+                <span class="ms-2">응답 생성 중입니다...</span>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/modules/twostep-response.js') }}"></script>
+{% endblock %}

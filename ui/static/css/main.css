@@ -1,0 +1,125 @@
+/* gaia/ui/static/css/main.css */
+
+/* 글로벌 스타일 */
+body {
+    font-family: 'Noto Sans KR', 'Noto Sans JP', sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* 헤더 스타일 */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* 컨텐츠 영역 */
+.content-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 15px 20px;
+}
+
+.card-header h5 {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+/* 폼 스타일 */
+.form-label {
+    font-weight: 500;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+textarea.form-control {
+    min-height: 120px;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* 템플릿 선택 관련 */
+.template-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.template-item:hover {
+    background-color: #f8f9fa;
+}
+
+.template-item.selected {
+    background-color: #e9f5ff;
+    border-left: 3px solid #0d6efd;
+}
+
+/* 응답 결과 영역 */
+.result-section {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+/* 로딩 스피너 */
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 언어 태그 */
+.lang-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.lang-ko {
+    background-color: #d9f2e6;
+    color: #198754;
+}
+
+.lang-jp {
+    background-color: #ffe8cc;
+    color: #fd7e14;
+}
+
+/* 템플릿 아이템 활성화 상태 스타일 */
+.template-item.active,
+.template-item:active {
+    background-color: #e9f5ff !important;
+    border-left: 3px solid #0d6efd !important;
+    color: #212529 !important; /* 텍스트 색상을 어둡게 유지 */
+}
+
+/* 템플릿 아이템 선택 상태의 배지 스타일 */
+.template-item.active .badge,
+.template-item:active .badge,
+.template-item.selected .badge {
+    color: #fff; /* 배지 텍스트는 흰색 유지 */
+    background-color: #0d6efd; /* 배지 배경색은 파란색 유지 */
+}

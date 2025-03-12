@@ -1,0 +1,12 @@
+Collecting httpx
+  Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: anyio in ./.pythonlibs/lib/python3.10/site-packages (from httpx) (3.7.1)
+Requirement already satisfied: certifi in ./.pythonlibs/lib/python3.10/site-packages (from httpx) (2025.1.31)
+Requirement already satisfied: httpcore==1.* in ./.pythonlibs/lib/python3.10/site-packages (from httpx) (1.0.7)
+Requirement already satisfied: idna in ./.pythonlibs/lib/python3.10/site-packages (from httpx) (3.10)
+Requirement already satisfied: h11<0.15,>=0.13 in ./.pythonlibs/lib/python3.10/site-packages (from httpcore==1.*->httpx) (0.14.0)
+Requirement already satisfied: sniffio>=1.1 in ./.pythonlibs/lib/python3.10/site-packages (from anyio->httpx) (1.3.1)
+Requirement already satisfied: exceptiongroup in ./.pythonlibs/lib/python3.10/site-packages (from anyio->httpx) (1.2.2)
+Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Installing collected packages: httpx
+Successfully installed httpx-0.28.1
