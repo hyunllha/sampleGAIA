@@ -148,12 +148,6 @@
   ※ SQLAlchemy는 2단계 이후 DB 확장 가능성을 고려하여 포함.<br>
   현재 1단계에서는 CSV 기반 데이터 처리에 집중하며, DB 도입 여부는 후속 논의 예정
 
-- **주요 라이브러리**
-  - requests: HTTP 클라이언트
-  - pandas: CSV 데이터 처리
-  - python-dotenv: 환경 변수 관리
-  - anthropic: Claude API 클라이언트 (버전 0.3.0, claude-2 모델 호환)
-
 #### 1.3 프론트엔드 스택
 - **HTML**: HTML5
 - **CSS**
